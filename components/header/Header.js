@@ -2,7 +2,6 @@ import { Text, View, StyleSheet, Image } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
     flexDirection: "row",
     justifyContent: "space-around",
