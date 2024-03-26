@@ -1,5 +1,13 @@
-import React from "react";
-import { View, StyleSheet, Image, FlatList } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  FlatList,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 
 const styles = StyleSheet.create({
   container: {
@@ -32,30 +40,51 @@ const styles = StyleSheet.create({
 });
 
 const Gallery = () => {
-  const photos = [
-    { id: 1, source: require("../assets/favicon.png") },
-    { id: 2, source: require("../assets/favicon.png") },
-    { id: 3, source: require("../assets/favicon.png") },
-    { id: 4, source: require("../assets/favicon.png") },
-    { id: 5, source: require("../assets/favicon.png") },
-    { id: 6, source: require("../assets/favicon.png") },
-    { id: 7, source: require("../assets/favicon.png") },
-    { id: 8, source: require("../assets/favicon.png") },
-  ];
+  const [isLoading, setLoading] = useState(true);
+  const [galleryData, setGalleryData] = useState([]);
+
+  useEffect(() => {
+    const fetchGalleryData = async () => {
+      try {
+        const response = await fetch(
+          "https://raw.githubusercontent.com/dmytrohrunytskyi/MobileLabs/master/data/galleryData.json"
+        );
+        const responseData = await response.json();
+        setGalleryData(responseData);
+      } catch (err) {
+        Alert.alert("Error", "Couldn't get photos");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGalleryData();
+  }, []);
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={photos}
-        keyExtractor={(item) => item.id.toString()}
-        numColumns={2}
-        renderItem={({ item }) => (
-          <View style={styles.column}>
-            <Image source={item.source} style={styles.image} />
-          </View>
-        )}
-      />
-    </View>
+    <>
+      {isLoading ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <ActivityIndicator size="large" />
+          <Text style={{ marginTop: 15 }}>Loading...</Text>
+        </View>
+      ) : (
+        <View style={styles.container}>
+          <FlatList
+            data={galleryData}
+            keyExtractor={(item) => item.id.toString()}
+            numColumns={2}
+            renderItem={({ item }) => (
+              <View style={styles.column}>
+                <Image source={{ uri: item.imageUrl }} style={styles.image} />
+              </View>
+            )}
+          />
+        </View>
+      )}
+    </>
   );
 };
 

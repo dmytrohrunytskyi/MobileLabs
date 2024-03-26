@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Image, FlatList, Alert } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  FlatList,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 
 const styles = StyleSheet.create({
   container: {
@@ -53,38 +61,48 @@ const Home = () => {
     const fetchNewsData = async () => {
       try {
         const response = await fetch(
-          "https://raw.githubusercontent.com/dmytrohrunytskyi/MobileLabs/master/data/newsData.json?token=GHSAT0AAAAAACP5BNYGW2QQO5V7OCRBZVDYZQDEEWA"
+          "https://raw.githubusercontent.com/dmytrohrunytskyi/MobileLabs/master/data/newsData.json"
         );
         const responseData = await response.json();
         setNewsData(responseData);
-        console.log(responseData);
       } catch (err) {
         Alert.alert("Error", "Couldn't get news");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchNewsData();
   }, []);
 
-  console.log(newsData);
-
   return (
-    <FlatList
-      contentContainerStyle={styles.container}
-      data={newsData}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => (
-        <View style={styles.card}>
-          <Image source={{ uri: item.imageUrl }} style={styles.image} />
-          <View style={styles.newsContent}>
-            <Text style={styles.newsTitle}>{item.title}</Text>
-            <Text style={styles.newsDate}>{item.date}</Text>
-            <Text style={styles.newsDescription}>{item.description}</Text>
-          </View>
+    <>
+      {isLoading ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <ActivityIndicator size="large" />
+          <Text style={{ marginTop: 15 }}>Loading...</Text>
         </View>
+      ) : (
+        <FlatList
+          contentContainerStyle={styles.container}
+          data={newsData}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.card}>
+              <Image source={{ uri: item.imageUrl }} style={styles.image} />
+              <View style={styles.newsContent}>
+                <Text style={styles.newsTitle}>{item.title}</Text>
+                <Text style={styles.newsDate}>{item.date}</Text>
+                <Text style={styles.newsDescription}>{item.description}</Text>
+              </View>
+            </View>
+          )}
+          ListHeaderComponent={<Text style={styles.title}>News</Text>}
+        />
       )}
-      ListHeaderComponent={<Text style={styles.title}>News</Text>}
-    />
+    </>
   );
 };
 
