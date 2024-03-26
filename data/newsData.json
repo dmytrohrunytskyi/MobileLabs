@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1,
+    "title": "News 1",
+    "date": "2024-03-27",
+    "description": "The First article. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis convallis tellus, eu vestibulum risus efficitur vitae. Nullam porta auctor interdum.",
+    "imageUrl": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 2,
+    "title": "News 2",
+    "date": "2024-03-28",
+    "description": "The Second article. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer feugiat ex non eros fermentum fringilla.",
+    "imageUrl": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 3,
+    "title": "News 3",
+    "date": "2024-03-29",
+    "description": "The Third article. Sed aliquam eros id diam efficitur tempus. Sed commodo feugiat leo, vel viverra metus fermentum in. Maecenas varius congue dui sed malesuada.",
+    "imageUrl": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 4,
+    "title": "News 4",
+    "date": "2024-03-29",
+    "description": "The Four article. Sed aliquam eros id diam efficitur tempus. Sed commodo feugiat leo, vel viverra metus fermentum in. Maecenas varius congue dui sed malesuada.",
+    "imageUrl": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 4,
+    "title": "News 4",
+    "date": "2024-03-29",
+    "description": "The Fifth article. Sed aliquam eros id diam efficitur tempus. Sed commodo feugiat leo, vel viverra metus fermentum in. Maecenas varius congue dui sed malesuada.",
+    "imageUrl": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 5,
+    "title": "News 5",
+    "date": "2024-03-29",
+    "description": "The Six article. Sed aliquam eros id diam efficitur tempus. Sed commodo feugiat leo, vel viverra metus fermentum in. Maecenas varius congue dui sed malesuada.",
+    "imageUrl": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 6,
+    "title": "News 6",
+    "date": "2024-03-29",
+    "description": "The Seven article. Sed aliquam eros id diam efficitur tempus. Sed commodo feugiat leo, vel viverra metus fermentum in. Maecenas varius congue dui sed malesuada.",
+    "imageUrl": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 7,
+    "title": "News 7",
+    "date": "2024-03-29",
+    "description": "The Eigth article. Sed aliquam eros id diam efficitur tempus. Sed commodo feugiat leo, vel viverra metus fermentum in. Maecenas varius congue dui sed malesuada.",
+    "imageUrl": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 8,
+    "title": "News 8",
+    "date": "2024-03-29",
+    "description": "The Nine article. Sed aliquam eros id diam efficitur tempus. Sed commodo feugiat leo, vel viverra metus fermentum in. Maecenas varius congue dui sed malesuada.",
+    "imageUrl": "https://via.placeholder.com/150"
+  }
+]
