@@ -7,7 +7,10 @@ import {
   FlatList,
   Alert,
   ActivityIndicator,
+  TouchableOpacity,
+  RefreshControl,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const styles = StyleSheet.create({
   container: {
@@ -25,9 +28,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   image: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 90,
+    height: 90,
+    borderRadius: 10,
     marginRight: 10,
   },
   newsContent: {
@@ -54,24 +57,25 @@ const styles = StyleSheet.create({
 });
 
 const Home = () => {
+  const navigation = useNavigation();
   const [isLoading, setLoading] = useState(true);
   const [newsData, setNewsData] = useState([]);
 
-  useEffect(() => {
-    const fetchNewsData = async () => {
-      try {
-        const response = await fetch(
-          "https://raw.githubusercontent.com/dmytrohrunytskyi/MobileLabs/master/data/newsData.json"
-        );
-        const responseData = await response.json();
-        setNewsData(responseData);
-      } catch (err) {
-        Alert.alert("Error", "Couldn't get news");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchNewsData = async () => {
+    try {
+      const response = await fetch(
+        "https://raw.githubusercontent.com/dmytrohrunytskyi/MobileLabs/master/data/newsData.json"
+      );
+      const responseData = await response.json();
+      setNewsData(responseData);
+    } catch (err) {
+      Alert.alert("Error", "Couldn't get news");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchNewsData();
   }, []);
 
@@ -86,20 +90,33 @@ const Home = () => {
         </View>
       ) : (
         <FlatList
+          refreshControl={
+            <RefreshControl refreshing={isLoading} onRefresh={fetchNewsData} />
+          }
           contentContainerStyle={styles.container}
           data={newsData}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <View style={styles.card}>
-              <Image source={{ uri: item.imageUrl }} style={styles.image} />
-              <View style={styles.newsContent}>
-                <Text style={styles.newsTitle}>{item.title}</Text>
-                <Text style={styles.newsDate}>{item.date}</Text>
-                <Text style={styles.newsDescription}>{item.description}</Text>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("NewsDetails", {
+                  title: item.title,
+                  date: item.date,
+                  description: item.description,
+                  imageUrl: item.imageUrl,
+                })
+              }
+            >
+              <View style={styles.card}>
+                <Image source={{ uri: item.imageUrl }} style={styles.image} />
+                <View style={styles.newsContent}>
+                  <Text style={styles.newsTitle}>{item.title}</Text>
+                  <Text style={styles.newsDate}>{item.date}</Text>
+                  <Text style={styles.newsDescription}>{item.description}</Text>
+                </View>
               </View>
-            </View>
+            </TouchableOpacity>
           )}
-          ListHeaderComponent={<Text style={styles.title}>News</Text>}
         />
       )}
     </>

@@ -4,7 +4,6 @@ import {
   View,
   StyleSheet,
   TextInput,
-  Button,
   TouchableOpacity,
   Keyboard,
   TouchableWithoutFeedback,
@@ -60,11 +59,11 @@ const Profile = () => {
   const [firstName, setFirstName] = useState("");
 
   const handleRegistration = () => {
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Confirm Password:", confirmPassword);
-    console.log("First Name:", firstName);
-    console.log("Last Name:", lastName);
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setFirstName("");
+    setLastName("");
   };
 
   return (
@@ -76,6 +75,18 @@ const Profile = () => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.inner}>
             <Text style={styles.registration}>Registration</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="First Name"
+              value={firstName}
+              onChangeText={setFirstName}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Last Name"
+              value={lastName}
+              onChangeText={setLastName}
+            />
             <TextInput
               style={styles.input}
               placeholder="Email"
@@ -96,19 +107,6 @@ const Profile = () => {
               value={confirmPassword}
               onChangeText={setConfirmPassword}
             />
-            <TextInput
-              style={styles.input}
-              placeholder="First Name"
-              value={firstName}
-              onChangeText={setFirstName}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Last Name"
-              value={lastName}
-              onChangeText={setLastName}
-            />
-
             <TouchableOpacity
               style={styles.button}
               onPress={handleRegistration}

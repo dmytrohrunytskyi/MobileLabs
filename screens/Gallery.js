@@ -7,7 +7,11 @@ import {
   FlatList,
   Alert,
   ActivityIndicator,
+  Modal,
+  TouchableOpacity,
+  RefreshControl,
 } from "react-native";
+import ImageViewer from "react-native-image-zoom-viewer";
 
 const styles = StyleSheet.create({
   container: {
@@ -34,32 +38,41 @@ const styles = StyleSheet.create({
     height: 150,
   },
   image: {
-    width: 100,
-    height: 100,
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+    borderRadius: 10,
   },
 });
 
 const Gallery = () => {
   const [isLoading, setLoading] = useState(true);
   const [galleryData, setGalleryData] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const fetchGalleryData = async () => {
+    try {
+      const response = await fetch(
+        "https://raw.githubusercontent.com/dmytrohrunytskyi/MobileLabs/master/data/galleryData.json"
+      );
+      const responseData = await response.json();
+      setGalleryData(responseData);
+    } catch (err) {
+      Alert.alert("Error", "Couldn't get photos");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchGalleryData = async () => {
-      try {
-        const response = await fetch(
-          "https://raw.githubusercontent.com/dmytrohrunytskyi/MobileLabs/master/data/galleryData.json"
-        );
-        const responseData = await response.json();
-        setGalleryData(responseData);
-      } catch (err) {
-        Alert.alert("Error", "Couldn't get photos");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchGalleryData();
   }, []);
+
+  const openImageViewer = (index) => {
+    setSelectedIndex(index);
+    setModalVisible(true);
+  };
 
   return (
     <>
@@ -73,15 +86,32 @@ const Gallery = () => {
       ) : (
         <View style={styles.container}>
           <FlatList
+            refreshControl={
+              <RefreshControl
+                refreshing={isLoading}
+                onRefresh={fetchGalleryData}
+              />
+            }
             data={galleryData}
             keyExtractor={(item) => item.id.toString()}
             numColumns={2}
-            renderItem={({ item }) => (
-              <View style={styles.column}>
+            renderItem={({ item, index }) => (
+              <TouchableOpacity
+                style={styles.column}
+                onPress={() => openImageViewer(index)}
+              >
                 <Image source={{ uri: item.imageUrl }} style={styles.image} />
-              </View>
+              </TouchableOpacity>
             )}
           />
+          <Modal visible={modalVisible} transparent={true}>
+            <ImageViewer
+              imageUrls={galleryData.map((item) => ({ url: item.imageUrl }))}
+              index={selectedIndex}
+              enableSwipeDown={true}
+              onSwipeDown={() => setModalVisible(false)}
+            />
+          </Modal>
         </View>
       )}
     </>
