@@ -1,5 +1,5 @@
-import React from "react";
-import { Text, View, StyleSheet, Image, FlatList } from "react-native";
+import React, { useState, useEffect } from "react";
+import { Text, View, StyleSheet, Image, FlatList, Alert } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
@@ -46,64 +46,27 @@ const styles = StyleSheet.create({
 });
 
 const Home = () => {
-  const newsData = [
-    {
-      id: 1,
-      imageUrl: require("../assets/favicon.png"),
-      title: "Sample News Title 1",
-      date: "March 26, 2024",
-      description: "Short description of the news article 1.",
-    },
-    {
-      id: 2,
-      imageUrl: require("../assets/favicon.png"),
-      title: "Sample News Title 2",
-      date: "March 27, 2024",
-      description: "Short description of the news article 2.",
-    },
-    {
-      id: 3,
-      imageUrl: require("../assets/favicon.png"),
-      title: "Sample News Title 3",
-      date: "March 27, 2024",
-      description: "Short description of the news article 3.",
-    },
-    {
-      id: 4,
-      imageUrl: require("../assets/favicon.png"),
-      title: "Sample News Title 4",
-      date: "March 27, 2024",
-      description: "Short description of the news article 4.",
-    },
-    {
-      id: 5,
-      imageUrl: require("../assets/favicon.png"),
-      title: "Sample News Title 5",
-      date: "March 27, 2024",
-      description: "Short description of the news article 5.",
-    },
-    {
-      id: 6,
-      imageUrl: require("../assets/favicon.png"),
-      title: "Sample News Title 6",
-      date: "March 27, 2024",
-      description: "Short description of the news article 6.",
-    },
-    {
-      id: 7,
-      imageUrl: require("../assets/favicon.png"),
-      title: "Sample News Title 7",
-      date: "March 27, 2024",
-      description: "Short description of the news article 7.",
-    },
-    {
-      id: 8,
-      imageUrl: require("../assets/favicon.png"),
-      title: "Sample News Title 8",
-      date: "March 27, 2024",
-      description: "Short description of the news article 8.",
-    },
-  ];
+  const [isLoading, setLoading] = useState(true);
+  const [newsData, setNewsData] = useState([]);
+
+  useEffect(() => {
+    const fetchNewsData = async () => {
+      try {
+        const response = await fetch(
+          "https://raw.githubusercontent.com/dmytrohrunytskyi/MobileLabs/master/data/newsData.json?token=GHSAT0AAAAAACP5BNYGW2QQO5V7OCRBZVDYZQDEEWA"
+        );
+        const responseData = await response.json();
+        setNewsData(responseData);
+        console.log(responseData);
+      } catch (err) {
+        Alert.alert("Error", "Couldn't get news");
+      }
+    };
+
+    fetchNewsData();
+  }, []);
+
+  console.log(newsData);
 
   return (
     <FlatList
@@ -112,7 +75,7 @@ const Home = () => {
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
         <View style={styles.card}>
-          <Image source={item.imageUrl} style={styles.image} />
+          <Image source={{ uri: item.imageUrl }} style={styles.image} />
           <View style={styles.newsContent}>
             <Text style={styles.newsTitle}>{item.title}</Text>
             <Text style={styles.newsDate}>{item.date}</Text>
